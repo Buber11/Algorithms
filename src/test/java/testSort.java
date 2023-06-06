@@ -1,28 +1,37 @@
+import Sort.Sort;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class testSort {
+    int[] array;
 
-   @Test
-   public void BubbleSort(){
+    @Before
+    public void initialize() {
+        array = new int[]{5, 3, 8, 2, 1, 4};
+    }
 
-      int[] array = {5, 3, 8, 2, 1, 4};
+    @Test
+    public void BubbleSort() {
 
-      Assertions.assertThat(Sort.BubbleSort(array)).isSorted();
+        Assertions.assertThat(Sort.BubbleSort(array)).isSorted();
 
-   }
+    }
 
-   @Test
-   public void SelectionSort(){
+    @Test
+    public void SelectionSort() {
 
-      int[] array = {5, 3, 8, 2, 1, 4};
+        Assertions.assertThat(Sort.SelectionSort(array)).isSorted();
 
-      Assertions.assertThat(Sort.SelectionSort(array)).isSorted();
+    }
 
-   }
+    @Test
+    public void MergeSort() {
 
+
+
+    }
 
 
 }
