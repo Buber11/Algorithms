@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 public class Sort {
 
     public static void main(String[] args) {
-        int length = 10000;
+        int length = 1000;
         Random random = new Random();
         int[] numbers = new int[length];
         int[] numbers2 = new int[length];
@@ -29,7 +29,7 @@ public class Sort {
           for(int i = 0; i < 1000 ;i++){
 
               for (int j = 0; j < length; j++) {
-                  int randomInt = random.nextInt()%2;
+                  int randomInt = random.nextInt();
                   numbers[j] = randomInt;
                   numbers2[j] = randomInt;
                   numbers3[j] = randomInt;
@@ -43,23 +43,16 @@ public class Sort {
               sumShell += end - start;
 
               start = System.nanoTime();
-              Arrays.sort(numbers3);
+              sortShellSedgewicka(numbers2);
               end = System.nanoTime();
               sumArray += end - start;
 
-              start = System.nanoTime();
-              MergeSort(numbers2,0,numbers2.length-1);
-              end = System.nanoTime();
-              sumMerge += end - start;
 
-              start = System.nanoTime();
-              timSort(numbers4,numbers4.length-1);
-              end = System.nanoTime();
-              sumTim += end - start;
 
           }
+          System.out.println(sumArray/1000 + "\n" + sumShell/1000);
+        System.out.println(sumMerge/1000);
 
-            System.out.println(sumArray/1000 + "\n" + sumShell/1000 + "\n" + sumMerge/1000 +"\n" + sumTim/1000);
 
         }
 
@@ -280,6 +273,41 @@ public class Sort {
                     arr[j] = arr[j - gap];
                     j -= gap;
                 }
+                arr[j] = key;
+            }
+        }
+    }
+    public static void sortShellSedgewicka(int arr[]) {
+        int n = arr.length;
+
+        // Generowanie sekwencji Sedgewicka
+        ArrayList<Integer> sedgewickSequence = new ArrayList<>();
+        int k = 0;
+        while (true) {
+            int pow1 = (int) Math.pow(2, k);
+            int pow2 = (int) Math.pow(3, k / 2);
+
+            int gap = pow1 * pow2;
+            if (gap >= n)
+                break;
+
+            sedgewickSequence.add(gap);
+            k++;
+        }
+
+        // Sortowanie
+        for (int s = sedgewickSequence.size() - 1; s >= 0; s--) {
+            int gap = sedgewickSequence.get(s);
+
+            for (int i = gap; i < n; i++) {
+                int key = arr[i];
+                int j = i;
+
+                while (j >= gap && arr[j - gap] > key) {
+                    arr[j] = arr[j - gap];
+                    j -= gap;
+                }
+
                 arr[j] = key;
             }
         }
