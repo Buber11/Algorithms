@@ -93,37 +93,24 @@ public class NumberSearch {
         return end;
     }
 
-    public static int jumpSearch(int[] arr, int x)
-    {
-        int n = arr.length;
+    public static int interpolationSearch(int ar[],int lo, int hi, int x){
+        if(lo <= hi && ar[lo] <= x && ar[hi] >= x){
+            int pos = lo + ((hi-lo)/(ar[hi]-ar[lo]) * (x-ar[lo]) );
 
-
-        int step = (int)Math.floor(Math.sqrt(n));
-
-
-        int prev = 0;
-        for (int minStep = Math.min(step, n)-1; arr[minStep] < x; minStep = Math.min(step, n)-1)
-        {
-            prev = step;
-            step += (int)Math.floor(Math.sqrt(n));
-            if (prev >= n)
-                return -1;
+            if(ar[pos] == x){
+                return pos;
+            }
+            if(ar[pos] < x){
+                return interpolationSearch(ar,pos+1,hi,x);
+            }
+            if(ar[pos] > x){
+                return interpolationSearch(ar,lo,pos-1,x);
+            }
 
         }
-
-
-        while (arr[prev] < x)
-        {
-            prev++;
-            if (prev == Math.min(step, n))
-                return -1;
-        }
-
-        if (arr[prev] == x)
-            return prev;
-
         return -1;
     }
+
 
 
 
