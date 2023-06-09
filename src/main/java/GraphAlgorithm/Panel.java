@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Optional;
 
 public class Panel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -12,13 +13,10 @@ public class Panel extends JPanel implements MouseListener, MouseMotionListener 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(Vertex vertex : graph.getVerticesNotConnected()){
-            vertex.paint(g);
-        }
+        graph.getVerticesNotConnected().stream()
+                .forEach(vertex -> vertex.paint(g));
 
-        for (Edge edge : graph.getEdgesList()){
-            edge.paint(g);
-        }
+
     }
 
     private Graph graph;
@@ -49,12 +47,14 @@ public class Panel extends JPanel implements MouseListener, MouseMotionListener 
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
 
-            for (Vertex vertex : graph.getVerticesNotConnected()) {
-                if (vertex.isMouseOver(e.getX(),e.getY())) {
-                    selectedVertex = vertex;
-                    break;
-                }
+            Optional<Vertex> selectedVertexOptional = graph.getVerticesNotConnected().stream()
+                    .filter(vertex -> vertex.isMouseOver(e.getX(), e.getY()))
+                    .findFirst();
+            
+            if(selectedVertexOptional.isPresent()){
+                selectedVertex = selectedVertexOptional.get(); 
             }
+            
         }
 
     }
